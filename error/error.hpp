@@ -21,7 +21,7 @@ public:
 
     friend ostream &operator<<(ostream &print, Error &err)
     {
-        return print << "{ message: \"" << err.message << "\" }\n";
+        return print << "ERROR: { message: \"" << err.message << "\" }\n";
     }
 };
 

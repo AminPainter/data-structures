@@ -136,7 +136,7 @@ any SinglyList<any>::removeAt(int index) throw(Error)
     {
         Node<any> *temp = head;
         head = temp->next;
-        int data = temp->data;
+        any data = temp->data;
         delete temp;
 
         return data;
@@ -148,7 +148,7 @@ any SinglyList<any>::removeAt(int index) throw(Error)
 
     nodeToBeRemoved = traverser->next;
     traverser->next = nodeToBeRemoved->next;
-    int data = nodeToBeRemoved->data;
+    any data = nodeToBeRemoved->data;
     delete nodeToBeRemoved;
 
     return data;
@@ -161,7 +161,7 @@ any SinglyList<any>::remove(int key) throw(Error)
     {
         Node<any> *temp = head;
         head = temp->next;
-        int data = temp->data;
+        any data = temp->data;
         delete temp;
 
         return data;
@@ -174,7 +174,7 @@ any SinglyList<any>::remove(int key) throw(Error)
 
         Node<any> *nodeToBeRemoved = traverser->next;
         traverser->next = nodeToBeRemoved->next;
-        int data = nodeToBeRemoved->data;
+        any data = nodeToBeRemoved->data;
         delete nodeToBeRemoved;
 
         return data;
