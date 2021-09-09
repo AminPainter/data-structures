@@ -1,5 +1,6 @@
 /////////////////////////////////////
 // Error
+
 #include <iostream>
 
 using namespace std;
@@ -23,4 +24,5 @@ public:
         return print << "{ message: \"" << err.message << "\" }\n";
     }
 };
+
 #endif

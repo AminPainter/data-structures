@@ -1,9 +1,10 @@
 /////////////////////////////////////
 // Singly Linked List
+
 #include <iostream>
 
-#include "C:\Users\acer\Desktop\Projects\Test\error\error.hpp"
-#include "C:\Users\acer\Desktop\Projects\Test\node\node.hpp"
+#include "../error/error.hpp"
+#include "../node/node.hpp"
 
 using namespace std;
 
@@ -29,8 +30,10 @@ public:
     SinglyList filter(bool (*)(any));
     SinglyList filter(bool (*)(any, int));
 
-    any remove(int = 0) throw(Error);
+    any removeAt(int = 0) throw(Error);
+    any remove(int) throw(Error);
 
+    void clear();
     void reverse();
     void display();
     void forEach(void (*)(any));
@@ -124,7 +127,7 @@ SinglyList<any> SinglyList<any>::filter(bool (*fn)(any, int))
 }
 
 template <typename any>
-any SinglyList<any>::remove(int index) throw(Error)
+any SinglyList<any>::removeAt(int index) throw(Error)
 {
     if (index < 0 || index >= length())
         throw Error("invalid index");
@@ -152,6 +155,35 @@ any SinglyList<any>::remove(int index) throw(Error)
 }
 
 template <typename any>
+any SinglyList<any>::remove(int key) throw(Error)
+{
+    if (head->data == key)
+    {
+        Node<any> *temp = head;
+        head = temp->next;
+        int data = temp->data;
+        delete temp;
+
+        return data;
+    }
+
+    for (Node<any> *traverser = head; traverser->next; traverser = traverser->next)
+    {
+        if (traverser->next->data != key)
+            continue;
+
+        Node<any> *nodeToBeRemoved = traverser->next;
+        traverser->next = nodeToBeRemoved->next;
+        int data = nodeToBeRemoved->data;
+        delete nodeToBeRemoved;
+
+        return data;
+    }
+
+    throw Error("element does not exist");
+}
+
+template <typename any>
 int SinglyList<any>::length()
 {
     int len = 0;
@@ -170,6 +202,21 @@ int SinglyList<any>::indexOf(any data)
             return i;
 
     return -1;
+}
+
+template <typename any>
+void SinglyList<any>::clear()
+{
+    Node<any> *current = head, *next = NULL;
+
+    while (current)
+    {
+        next = current->next;
+        delete current;
+        current = next;
+    }
+
+    head = NULL;
 }
 
 template <typename any>
