@@ -1,9 +1,15 @@
+/////////////////////////////////////
+// Queue
+
 #include <iostream>
 
 #include "../error/error.hpp"
 #include "../node/node.hpp"
 
 using namespace std;
+
+#ifndef QUEUE_H
+#define QUEUE_H
 
 template <typename any>
 class Queue
@@ -49,7 +55,7 @@ any Queue<any>::dequeue() throw(Error)
 
     Node<any> *temp = front;
     front = temp->next;
-    any data = front->data;
+    any data = temp->data;
     delete temp;
 
     return data;
@@ -85,3 +91,5 @@ ostream &operator<<(ostream &print, Queue<T> &q)
     q.display();
     return print;
 }
+
+#endif

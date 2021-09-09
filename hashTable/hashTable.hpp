@@ -8,6 +8,9 @@
 
 using namespace std;
 
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
+
 class HashTable
 {
 private:
@@ -88,3 +91,5 @@ ostream &operator<<(ostream &print, HashTable &ht)
     ht.display();
     return print;
 }
+
+#endif
