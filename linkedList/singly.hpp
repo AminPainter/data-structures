@@ -15,58 +15,59 @@ template <typename any>
 class SinglyList
 {
 protected:
-    Node<any> *head;
+    Node<any> *head = NULL;
 
 public:
     SinglyList();
-    SinglyList(const SinglyList &);
+    SinglyList(any array[], int arraySize);
+    SinglyList(const SinglyList &list);
 
     int length();
-    int indexOf(any);
+    int indexOf(any element);
 
-    SinglyList &append(any);
-    SinglyList &prepend(any);
-    SinglyList &insert(any, int) throw(Error);
-    SinglyList filter(bool (*)(any));
-    SinglyList filter(bool (*)(any, int));
+    SinglyList &append(any element);
+    SinglyList &prepend(any element);
+    SinglyList &insert(any element, int index) throw(Error);
+    SinglyList filter(bool (*)(any element, int index));
 
-    any removeAt(int = 0) throw(Error);
-    any remove(int) throw(Error);
+    any removeAt(int index = 0) throw(Error);
+    any remove(any element) throw(Error);
 
     void clear();
     void reverse();
     void display();
-    void forEach(void (*)(any));
-    void forEach(void (*)(any, int));
+    void forEach(void (*)(any element, int index));
 
-    bool includes(any);
+    bool includes(any element);
 
     template <typename T>
     friend ostream &operator<<(ostream &, SinglyList<T> &);
 };
 
 template <typename any>
-SinglyList<any>::SinglyList()
+SinglyList<any>::SinglyList() {}
+
+template <typename any>
+SinglyList<any>::SinglyList(any array[], int arraySize)
 {
-    this->head = NULL;
+    for (int i = 0; i < arraySize; i++)
+        this->append(array[i]);
 }
 
 template <typename any>
 SinglyList<any>::SinglyList(const SinglyList &list)
 {
-    this->head = NULL;
-
     for (Node<any> *traverser = list.head; traverser; traverser = traverser->next)
         this->append(traverser->data);
 }
 
 template <typename any>
-SinglyList<any> &SinglyList<any>::append(any data)
+SinglyList<any> &SinglyList<any>::append(any element)
 {
     if (!head)
-        return prepend(data);
+        return prepend(element);
 
-    Node<any> *temp = new Node<any>(data), *traverser = head;
+    Node<any> *temp = new Node<any>(element), *traverser = head;
     while (traverser->next)
         traverser = traverser->next;
 
@@ -76,9 +77,9 @@ SinglyList<any> &SinglyList<any>::append(any data)
 }
 
 template <typename any>
-SinglyList<any> &SinglyList<any>::prepend(any data)
+SinglyList<any> &SinglyList<any>::prepend(any element)
 {
-    Node<any> *temp = new Node<any>(data);
+    Node<any> *temp = new Node<any>(element);
     temp->next = head;
     head = temp;
 
@@ -86,12 +87,12 @@ SinglyList<any> &SinglyList<any>::prepend(any data)
 }
 
 template <typename any>
-SinglyList<any> &SinglyList<any>::insert(any data, int index) throw(Error)
+SinglyList<any> &SinglyList<any>::insert(any element, int index) throw(Error)
 {
     if (index < 0 || index >= length())
         throw Error("invalid index");
 
-    Node<any> *temp = new Node<any>(data), *traverser = head;
+    Node<any> *temp = new Node<any>(element), *traverser = head;
     for (int i = 0; i < index - 1; i++)
         traverser = traverser->next;
 
@@ -99,18 +100,6 @@ SinglyList<any> &SinglyList<any>::insert(any data, int index) throw(Error)
     traverser->next = temp;
 
     return *this;
-}
-
-template <typename any>
-SinglyList<any> SinglyList<any>::filter(bool (*fn)(any))
-{
-    SinglyList<any> temporary;
-
-    for (Node<any> *traverser = head; traverser; traverser = traverser->next)
-        if (fn(traverser->data))
-            temporary.append(traverser->data);
-
-    return temporary;
 }
 
 template <typename any>
@@ -136,10 +125,10 @@ any SinglyList<any>::removeAt(int index) throw(Error)
     {
         Node<any> *temp = head;
         head = temp->next;
-        any data = temp->data;
+        any element = temp->data;
         delete temp;
 
-        return data;
+        return element;
     }
 
     Node<any> *traverser = head, *nodeToBeRemoved;
@@ -148,36 +137,36 @@ any SinglyList<any>::removeAt(int index) throw(Error)
 
     nodeToBeRemoved = traverser->next;
     traverser->next = nodeToBeRemoved->next;
-    any data = nodeToBeRemoved->data;
+    any element = nodeToBeRemoved->data;
     delete nodeToBeRemoved;
 
-    return data;
+    return element;
 }
 
 template <typename any>
-any SinglyList<any>::remove(int key) throw(Error)
+any SinglyList<any>::remove(any element) throw(Error)
 {
-    if (head->data == key)
+    if (head->data == element)
     {
         Node<any> *temp = head;
         head = temp->next;
-        any data = temp->data;
+        any element = temp->data;
         delete temp;
 
-        return data;
+        return element;
     }
 
     for (Node<any> *traverser = head; traverser->next; traverser = traverser->next)
     {
-        if (traverser->next->data != key)
+        if (traverser->next->data != element)
             continue;
 
         Node<any> *nodeToBeRemoved = traverser->next;
         traverser->next = nodeToBeRemoved->next;
-        any data = nodeToBeRemoved->data;
+        any element = nodeToBeRemoved->data;
         delete nodeToBeRemoved;
 
-        return data;
+        return element;
     }
 
     throw Error("element does not exist");
@@ -194,11 +183,11 @@ int SinglyList<any>::length()
 }
 
 template <typename any>
-int SinglyList<any>::indexOf(any data)
+int SinglyList<any>::indexOf(any element)
 {
     int i = 0;
     for (Node<any> *traverser = head; traverser; traverser = traverser->next, i++)
-        if (traverser->data == data)
+        if (traverser->data == element)
             return i;
 
     return -1;
@@ -246,13 +235,6 @@ void SinglyList<any>::display()
 }
 
 template <typename any>
-void SinglyList<any>::forEach(void (*fn)(any))
-{
-    for (Node<any> *traverser = head; traverser; traverser = traverser->next)
-        fn(traverser->data);
-}
-
-template <typename any>
 void SinglyList<any>::forEach(void (*fn)(any, int))
 {
     int i = 0;
@@ -261,9 +243,9 @@ void SinglyList<any>::forEach(void (*fn)(any, int))
 }
 
 template <typename any>
-bool SinglyList<any>::includes(any data)
+bool SinglyList<any>::includes(any element)
 {
-    return indexOf(data) != -1;
+    return indexOf(element) != -1;
 }
 
 template <typename T>
