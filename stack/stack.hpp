@@ -32,9 +32,9 @@ public:
 };
 
 template <typename any>
-Stack<any> &Stack<any>::push(any data)
+Stack<any> &Stack<any>::push(any element)
 {
-    Node<any> *temp = new Node<any>(data);
+    Node<any> *temp = new Node<any>(element);
 
     temp->next = top;
     top = temp;
@@ -50,10 +50,10 @@ any Stack<any>::pop() throw(Error)
 
     Node<any> *temp = top;
     top = temp->next;
-    any data = temp->data;
+    any element = temp->data;
     delete temp;
 
-    return data;
+    return element;
 }
 
 template <typename any>
