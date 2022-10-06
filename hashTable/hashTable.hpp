@@ -14,13 +14,9 @@ using namespace std;
 class HashTable
 {
 private:
-    // Class variables
     static const int SIZE = 10;
-
-    // Instance variables
     SinglyList<int> table[SIZE];
 
-    // Private methods
     int hash(int);
 
 public:
