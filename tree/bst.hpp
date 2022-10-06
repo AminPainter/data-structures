@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "node/treeNode.hpp"
-#include "error/error.hpp"
+#include "../node/treeNode.hpp"
+#include "../error/error.hpp"
 
 using namespace std;
 
@@ -21,7 +21,10 @@ public:
     void inorder();
     void preorder();
     void postorder();
+
     TreeNode<int> *search(int key);
+
+    bool includes(int key);
 };
 
 void BST::insert(int element)
@@ -111,6 +114,11 @@ TreeNode<int> *BST::search(int key)
             traverser = traverser->rightChild;
     }
     return NULL;
+}
+
+bool BST::includes(int key)
+{
+    return search(key) != NULL;
 }
 
 #endif
