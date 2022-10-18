@@ -2,6 +2,7 @@
 
 #include "../node/treeNode.hpp"
 #include "../error/error.hpp"
+#include "../stack/stack.hpp"
 
 using namespace std;
 
@@ -12,11 +13,14 @@ class BST
 {
 private:
     TreeNode<int> *root = NULL;
+
     void inorder(TreeNode<int> *root);
     void preorder(TreeNode<int> *root);
     void postorder(TreeNode<int> *root);
 
 public:
+    static BST fromPreorder(int preorder[], int preorderLength);
+
     void insert(int element);
     void inorder();
     void preorder();
@@ -26,6 +30,46 @@ public:
 
     bool includes(int key);
 };
+
+BST BST::fromPreorder(int preorder[], int preorderLength)
+{
+    BST tree;
+    if (!preorderLength)
+        return tree;
+
+    TreeNode<int> *traverser;
+    Stack<TreeNode<int> *> collector;
+
+    traverser = tree.root = new TreeNode<int>(preorder[0]);
+
+    int i = 1;
+    while (i < preorderLength)
+    {
+        int nextElement = preorder[i];
+        TreeNode<int> *temp = new TreeNode<int>(nextElement);
+
+        if (nextElement < traverser->data)
+        {
+            traverser->leftChild = temp;
+            collector.push(traverser);
+            traverser = traverser->leftChild;
+            i++;
+            continue;
+        }
+
+        if (collector.isEmpty() || nextElement < collector.peek()->data)
+        {
+            traverser->rightChild = temp;
+            traverser = traverser->rightChild;
+            i++;
+            continue;
+        }
+
+        traverser = collector.pop();
+    }
+
+    return tree;
+}
 
 void BST::insert(int element)
 {
