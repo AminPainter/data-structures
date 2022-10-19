@@ -21,6 +21,11 @@ struct TreeNode
         this->data = data;
     }
 
+    bool isLeafNode()
+    {
+        return !leftChild && !rightChild;
+    }
+
     template <typename T>
     friend ostream &operator<<(ostream &out, TreeNode<T> *treeNode);
 };

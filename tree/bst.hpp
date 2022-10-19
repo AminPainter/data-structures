@@ -18,6 +18,10 @@ private:
     void preorder(TreeNode<int> *root);
     void postorder(TreeNode<int> *root);
 
+    int count(TreeNode<int> *root);
+    int countLeaves(TreeNode<int> *root);
+    int height(TreeNode<int> *root);
+
 public:
     static BST fromPreorder(int preorder[], int preorderLength);
 
@@ -29,7 +33,49 @@ public:
     TreeNode<int> *search(int key);
 
     bool includes(int key);
+
+    int count();
+    int countLeaves();
+    int height();
 };
+
+int BST::count(TreeNode<int> *root)
+{
+    return root ? count(root->leftChild) + count(root->rightChild) + 1 : 0;
+}
+
+int BST::count()
+{
+    return count(root);
+}
+
+int BST::countLeaves(TreeNode<int> *root)
+{
+    if (!root)
+        return 0;
+
+    int x = countLeaves(root->leftChild), y = countLeaves(root->rightChild);
+    return root->isLeafNode() ? x + y + 1 : x + y;
+}
+
+int BST::countLeaves()
+{
+    return countLeaves(root);
+}
+
+int BST::height(TreeNode<int> *root)
+{
+    if (!root)
+        return -1;
+
+    int x = height(root->leftChild), y = height(root->rightChild);
+    return (x > y ? x : y) + 1;
+}
+
+int BST::height()
+{
+    return height(root);
+}
 
 BST BST::fromPreorder(int preorder[], int preorderLength)
 {
