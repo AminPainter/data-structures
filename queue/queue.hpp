@@ -58,6 +58,9 @@ any Queue<any>::dequeue() throw(Error)
     any data = temp->data;
     delete temp;
 
+    if (!front)
+        rear = NULL;
+
     return data;
 }
 

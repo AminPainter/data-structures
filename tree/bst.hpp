@@ -12,8 +12,12 @@ using namespace std;
 
 class BST : public BinaryTree
 {
+private:
+    static bool isBST(TreeNode<int> *root);
+
 public:
     static BST fromPreorder(int preorder[], int preorderLength);
+    static bool isBST(BinaryTree tree);
 
     void insert(int element);
 
@@ -21,6 +25,26 @@ public:
 
     bool includes(int key);
 };
+
+bool BST::isBST(TreeNode<int> *root)
+{
+    if (!root)
+        return true;
+
+    TreeNode<int> *leftChild = root->leftChild;
+    TreeNode<int> *rightChild = root->rightChild;
+
+    bool isCurrentBST = true;
+    if ((leftChild && leftChild->data > root->data) || (rightChild && rightChild->data < root->data))
+        isCurrentBST = false;
+
+    return isBST(leftChild) && isBST(rightChild) && isCurrentBST;
+}
+
+bool BST::isBST(BinaryTree tree)
+{
+    return isBST(tree.getRoot());
+}
 
 BST BST::fromPreorder(int preorder[], int preorderLength)
 {
