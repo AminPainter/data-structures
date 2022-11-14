@@ -98,9 +98,9 @@ TreeNode<int> *BST::remove(TreeNode<int> *current, int element)
     {
         // Find inorder successor of current node (p)
         TreeNode<int> *successor = inorderSuccessor(current);
-        // Replace current node's data with
+        // Replace current node's data with successor
         current->data = successor->data;
-        // A successor can also have some child nodes, so delete it the same way as you deleted current node
+        // A successor can also have some child nodes, so delete successor the same way as you deleted current node
         current->rightChild = remove(current->rightChild, successor->data);
     }
     // Delete a leaf node from left subtree if left subtree is larger than right subtree
@@ -108,9 +108,9 @@ TreeNode<int> *BST::remove(TreeNode<int> *current, int element)
     {
         // Find inorder predecessor of current node (p)
         TreeNode<int> *predecessor = inorderPredecessor(current);
-        // Replace current node's data with
+        // Replace current node's data with predecessor
         current->data = predecessor->data;
-        // A predecessor can also have some child nodes, so delete it the same way as you deleted current node
+        // A predecessor can also have some child nodes, so delete predecessor the same way as you deleted current node
         current->leftChild = remove(current->leftChild, predecessor->data);
     }
     return current;
