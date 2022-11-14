@@ -133,19 +133,19 @@ void BinaryTree::postorder(TreeNode<int> *root)
 void BinaryTree::inorder()
 {
     inorder(root);
-    cout << '\n';
+    cout << "(NULL)\n";
 }
 
 void BinaryTree::preorder()
 {
     preorder(root);
-    cout << '\n';
+    cout << "(NULL)\n";
 }
 
 void BinaryTree::postorder()
 {
     postorder(root);
-    cout << '\n';
+    cout << "(NULL)\n";
 }
 
 ostream &operator<<(ostream &print, BinaryTree &tree)
