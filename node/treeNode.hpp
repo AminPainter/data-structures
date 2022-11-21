@@ -1,6 +1,3 @@
-/////////////////////////////////////
-// Tree Node
-
 #include <iostream>
 
 using namespace std;

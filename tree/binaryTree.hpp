@@ -33,8 +33,6 @@ public:
     int countLeaves();
     int height();
 
-    TreeNode<int> *getRoot();
-
     friend ostream &operator<<(ostream &, BinaryTree &);
 };
 
@@ -58,11 +56,6 @@ BinaryTree::BinaryTree(int levelOrder[], int levelOrderSize)
         current->rightChild = new TreeNode<int>(levelOrder[count++]);
         queue.enqueue(current->rightChild);
     }
-}
-
-TreeNode<int> *BinaryTree::getRoot()
-{
-    return root;
 }
 
 int BinaryTree::count(TreeNode<int> *root)

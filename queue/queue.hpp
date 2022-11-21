@@ -1,6 +1,3 @@
-/////////////////////////////////////
-// Queue
-
 #include <iostream>
 
 #include "../error/error.hpp"

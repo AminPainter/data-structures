@@ -1,6 +1,3 @@
-/////////////////////////////////////
-// Singly Linked List
-
 #include <iostream>
 
 #include "../error/error.hpp"

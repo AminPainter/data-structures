@@ -1,6 +1,3 @@
-/////////////////////////////////////
-// Stack
-
 #include <iostream>
 
 #include "../error/error.hpp"

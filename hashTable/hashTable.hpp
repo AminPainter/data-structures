@@ -1,6 +1,3 @@
-/////////////////////////////////////
-// Hash Table
-
 #include <iostream>
 
 #include "../linkedList/singly.hpp"

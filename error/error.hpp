@@ -1,6 +1,3 @@
-/////////////////////////////////////
-// Error
-
 #include <iostream>
 
 using namespace std;
