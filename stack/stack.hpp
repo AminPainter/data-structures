@@ -17,8 +17,8 @@ private:
 public:
     Stack &push(any);
 
-    any pop() throw(Error);
-    any peek() throw(Error);
+    any pop();
+    any peek();
 
     void display();
 
@@ -40,7 +40,7 @@ Stack<any> &Stack<any>::push(any element)
 }
 
 template <typename any>
-any Stack<any>::pop() throw(Error)
+any Stack<any>::pop()
 {
     if (isEmpty())
         throw Error("underflow");
@@ -54,7 +54,7 @@ any Stack<any>::pop() throw(Error)
 }
 
 template <typename any>
-any Stack<any>::peek() throw(Error)
+any Stack<any>::peek()
 {
     if (isEmpty())
         throw Error("underflow");

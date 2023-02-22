@@ -21,8 +21,8 @@ public:
 
     int *search(int);
 
-    int remove(int) throw(Error);
-    int removeAt(int *) throw(Error);
+    int remove(int);
+    int removeAt(int *);
 
     void clear();
     void display();
@@ -54,12 +54,12 @@ int *HashTable::search(int key)
     return coords;
 }
 
-int HashTable::remove(int key) throw(Error)
+int HashTable::remove(int key)
 {
     return table[hash(key)].remove(key);
 }
 
-int HashTable::removeAt(int *coords) throw(Error)
+int HashTable::removeAt(int *coords)
 {
     if (coords[0] < 0 || coords[0] >= SIZE)
         throw Error("invalid index");

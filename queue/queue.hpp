@@ -17,8 +17,8 @@ private:
 public:
     Queue &enqueue(any);
 
-    any dequeue() throw(Error);
-    any peek() throw(Error);
+    any dequeue();
+    any peek();
 
     void display();
 
@@ -45,7 +45,7 @@ Queue<any> &Queue<any>::enqueue(any data)
 }
 
 template <typename any>
-any Queue<any>::dequeue() throw(Error)
+any Queue<any>::dequeue()
 {
     if (isEmpty())
         throw Error("underflow");
@@ -62,7 +62,7 @@ any Queue<any>::dequeue() throw(Error)
 }
 
 template <typename any>
-any Queue<any>::peek() throw(Error)
+any Queue<any>::peek()
 {
     if (isEmpty())
         throw Error("underflow");

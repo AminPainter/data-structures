@@ -24,11 +24,11 @@ public:
 
     SinglyList &append(any element);
     SinglyList &prepend(any element);
-    SinglyList &insert(any element, int index) throw(Error);
+    SinglyList &insert(any element, int index);
     SinglyList filter(bool (*)(any element, int index));
 
-    any removeAt(int index = 0) throw(Error);
-    any remove(any element) throw(Error);
+    any removeAt(int index = 0);
+    any remove(any element);
 
     void clear();
     void reverse();
@@ -84,7 +84,7 @@ SinglyList<any> &SinglyList<any>::prepend(any element)
 }
 
 template <typename any>
-SinglyList<any> &SinglyList<any>::insert(any element, int index) throw(Error)
+SinglyList<any> &SinglyList<any>::insert(any element, int index)
 {
     if (index < 0 || index >= length())
         throw Error("invalid index");
@@ -113,7 +113,7 @@ SinglyList<any> SinglyList<any>::filter(bool (*fn)(any, int))
 }
 
 template <typename any>
-any SinglyList<any>::removeAt(int index) throw(Error)
+any SinglyList<any>::removeAt(int index)
 {
     if (index < 0 || index >= length())
         throw Error("invalid index");
@@ -141,7 +141,7 @@ any SinglyList<any>::removeAt(int index) throw(Error)
 }
 
 template <typename any>
-any SinglyList<any>::remove(any element) throw(Error)
+any SinglyList<any>::remove(any element)
 {
     if (head->data == element)
     {
