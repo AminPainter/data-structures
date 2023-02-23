@@ -10,6 +10,7 @@ using namespace std;
 template <typename any>
 class Array
 {
+protected:
     any *arr;
     int len = 0, capacity;
 
@@ -20,15 +21,17 @@ public:
     Array(int capacity = 10);
     Array(int *carray, int size);
 
-    void insert(any element, int index = 0);
-    void push(any element);
+    Array &insert(any element, int index = 0);
+    Array &push(any element);
+
+    void sort();
 
     int length();
 
     any operator[](int index);
 
     template <typename T>
-    friend ostream &operator<<(ostream &print, Array<T> &obj);
+    friend ostream &operator<<(ostream &print, Array<T> obj);
 };
 
 template <typename any>
@@ -68,21 +71,32 @@ void Array<any>::resizeArrayAppropriately()
     if (len + 1 < capacity)
         return;
 
-    cout << "Reallocating array memory\n";
     capacity *= 2;
-    realloc(arr, capacity);
+
+    int *tempArr = new int[capacity];
+    for (int i = 0; i < len; i++)
+        tempArr[i] = arr[i];
+    delete arr;
+    arr = tempArr;
 }
 
 template <typename any>
-void Array<any>::push(any element)
+Array<any> &Array<any>::push(any element)
 {
     resizeArrayAppropriately();
     arr[len++] = element;
+    return *this;
 }
 
 template <typename any>
-void Array<any>::insert(any element, int index)
+Array<any> &Array<any>::insert(any element, int index)
 {
+    if (index < 0)
+        index = len + index;
+
+    if (index == len)
+        return push(element);
+
     if (!isValidIndex(index))
         throw Error("Invalid index provided");
 
@@ -93,6 +107,26 @@ void Array<any>::insert(any element, int index)
 
     arr[index] = element;
     len++;
+
+    return *this;
+}
+
+template <typename any>
+void Array<any>::sort()
+{
+    for (int i = 1; i < len; i++)
+    {
+        int key = arr[i];
+
+        int j = i - 1;
+        while (j > -1 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        arr[j + 1] = key;
+    }
 }
 
 template <typename any>
@@ -105,8 +139,11 @@ any Array<any>::operator[](int index)
 }
 
 template <typename T>
-ostream &operator<<(ostream &print, Array<T> &obj)
+ostream &operator<<(ostream &print, Array<T> obj)
 {
+    if (!obj.len)
+        return print << "[NULL]";
+
     print << '[';
 
     int i;
