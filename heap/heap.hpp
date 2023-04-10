@@ -1,115 +1,114 @@
 #include <iostream>
-#include "../array/array.hpp"
 
 using namespace std;
 
 #ifndef HEAP_H
 #define HEAP_H
-#define FIRST_INDEX 1
+#define HEAP_START_INDEX 1
 
-class Heap : Array<int>
-{
-    static void swap(int &a, int &b);
-
-public:
-    Heap();
-
-    Heap &insert(int element);
-    void display();
-    int remove();
-
-    static Array heapSort(Array unsortedArray);
-};
-
-Array<int> Heap::heapSort(Array<int> unsortedArray)
-{
-    Heap tempHeap;
-    for (int i = 0; i < unsortedArray.length(); i++)
-        tempHeap.insert(unsortedArray[i]);
-
-    Array<int> tempArray;
-    for (int i = 0; i < unsortedArray.length(); i++)
-        tempArray.insert(tempHeap.remove());
-
-    return tempArray;
-}
-
-void Heap::swap(int &a, int &b)
+void swap(int &a, int &b)
 {
     int temp = a;
     a = b;
     b = temp;
 }
 
-Heap::Heap()
+class Heap
 {
-    push(INT32_MAX);
+    int *heap, length;
+
+    void heapify(int currentNodeIndex);
+
+    friend ostream &operator<<(ostream &print, Heap obj);
+
+public:
+    Heap(int *array, int n);
+
+    int remove();
+
+    static void heapSort(int *array, int n);
+};
+
+Heap::Heap(int *array, int n)
+{
+    this->length = n + 1;
+    this->heap = new int[this->length];
+
+    for (int i = 0; i < n; i++)
+        this->heap[i + 1] = array[i];
+
+    for (int i = length / 2; i >= HEAP_START_INDEX; i--)
+        heapify(i);
 }
 
-Heap &Heap::insert(int element)
+void Heap::heapify(int currentNodeIndex)
 {
-    push(element);
+    int
+        leftChildIndex = currentNodeIndex * 2,
+        rightChildIndex = leftChildIndex + 1,
+        largestNodeIndex = currentNodeIndex;
 
-    int i = len - 1;
-    while (i >= 1)
-    {
-        int parentEl = arr[i / 2];
+    if (leftChildIndex < length && heap[leftChildIndex] > heap[largestNodeIndex])
+        largestNodeIndex = leftChildIndex;
 
-        if (element > parentEl)
-            arr[i] = parentEl;
-        else
-            break;
+    if (rightChildIndex < length && heap[rightChildIndex] > heap[largestNodeIndex])
+        largestNodeIndex = rightChildIndex;
 
-        i /= 2;
-    }
-
-    arr[i] = element;
-
-    return *this;
-}
-
-void Heap::display()
-{
-    if (len <= 1)
-    {
-        cout << "[NULL]";
+    if (largestNodeIndex == currentNodeIndex)
         return;
-    }
 
-    cout << '[';
+    swap(heap[currentNodeIndex], heap[largestNodeIndex]);
+    heapify(largestNodeIndex);
+}
 
-    int i;
-    for (i = 1; i < len - 1; i++)
-        cout << arr[i] << ", ";
+ostream &operator<<(ostream &print, Heap obj)
+{
+    for (int i = HEAP_START_INDEX; i < obj.length; i++)
+        cout << '(' << obj.heap[i] << ')';
 
-    cout << arr[i] << "]\n";
+    cout << '\n';
 }
 
 int Heap::remove()
 {
-    const int deletedElement = arr[FIRST_INDEX];
+    int
+        rootNodeIndex = HEAP_START_INDEX,
+        removedElement = heap[rootNodeIndex],
+        leftChildIndex, rightChildIndex, largestNodeIndex;
 
-    swap(arr[FIRST_INDEX], arr[len - 1]);
-    len--;
+    swap(heap[rootNodeIndex], heap[length - 1]);
+    length--;
 
-    int i = FIRST_INDEX;
-    while (i < len)
+    while (rootNodeIndex < length)
     {
-        int j = i * 2;
-        if (!isValidIndex(j))
-            break;
-        if (isValidIndex(j + 1) && arr[j + 1] > arr[j])
-            j++;
+        largestNodeIndex = rootNodeIndex;
+        leftChildIndex = rootNodeIndex * 2;
+        rightChildIndex = leftChildIndex + 1;
 
-        if (arr[j] > arr[i])
-            swap(arr[i], arr[j]);
-        else
+        if (leftChildIndex < length && heap[leftChildIndex] > heap[largestNodeIndex])
+            largestNodeIndex = leftChildIndex;
+        if (rightChildIndex < length && heap[rightChildIndex] > heap[largestNodeIndex])
+            largestNodeIndex = rightChildIndex;
+
+        if (largestNodeIndex == rootNodeIndex)
             break;
 
-        i = j;
+        swap(heap[largestNodeIndex], heap[rootNodeIndex]);
+        rootNodeIndex = largestNodeIndex;
     }
 
-    return deletedElement;
+    return removedElement;
+}
+
+void Heap::heapSort(int *array, int n)
+{
+    Heap tempHeap(array, n);
+
+    for (int i = tempHeap.length - 1; i >= HEAP_START_INDEX; i--)
+        tempHeap.heap[i] = tempHeap.remove();
+
+    for (int i = 0; i < n; i++)
+        array[i] = tempHeap.heap[i + 1];
 }
 
 #endif
