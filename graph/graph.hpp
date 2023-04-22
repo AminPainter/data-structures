@@ -23,7 +23,7 @@ public:
     void dfsTraversal(int startingVertex);
     void bfsTraversal(int startingVertex);
 
-    Graph &addEdge(int startingVertex, int endingVertex);
+    Graph &addEdge(int startingVertex, int endingVertex, int weight = 1);
 };
 
 Graph::Graph(int size)
@@ -53,9 +53,9 @@ void Graph::displayAdjacencyMatrix()
     }
 }
 
-Graph &Graph::addEdge(int startingVertex, int endingVertex)
+Graph &Graph::addEdge(int startingVertex, int endingVertex, int weight)
 {
-    graph[startingVertex][endingVertex] = 1;
+    graph[startingVertex][endingVertex] = weight;
     return *this;
 }
 
