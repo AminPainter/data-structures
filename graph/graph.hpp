@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "../error/error.hpp"
+#include "../queue/queue.hpp"
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
 
     void displayAdjacencyMatrix();
     void dfsTraversal(int startingVertex);
+    void bfsTraversal(int startingVertex);
 
     Graph &addEdge(int startingVertex, int endingVertex);
 };
@@ -59,9 +61,6 @@ Graph &Graph::addEdge(int startingVertex, int endingVertex)
 
 void Graph::dfsTraversal(int startingVertex, int visited[])
 {
-    if (startingVertex >= size)
-        throw Error("Invalid vertex");
-
     cout << startingVertex << '\t';
     visited[startingVertex] = 1;
 
@@ -72,10 +71,39 @@ void Graph::dfsTraversal(int startingVertex, int visited[])
 
 void Graph::dfsTraversal(int startingVertex)
 {
+    if (startingVertex >= size)
+        throw Error("Invalid vertex");
+
     int visited[size] = {0};
     cout << "(\t";
     dfsTraversal(startingVertex, visited);
     cout << ")\n";
+}
+
+void Graph::bfsTraversal(int startingVertex)
+{
+    Queue<int> q;
+    int visited[size] = {0};
+    q.enqueue(startingVertex);
+    cout << startingVertex << '\t';
+    visited[startingVertex] = 1;
+
+    while (!q.isEmpty())
+    {
+        int explorer = q.dequeue();
+
+        for (int i = 1; i < size; i++)
+        {
+            if (graph[explorer][i] && !visited[i])
+            {
+                q.enqueue(i);
+                cout << i << '\t';
+                visited[i] = 1;
+            }
+        }
+    }
+
+    cout << '\n';
 }
 
 #endif
